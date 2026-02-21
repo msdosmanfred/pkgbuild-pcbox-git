@@ -1,0 +1,4 @@
+[pcbox-git]
+source = "git"
+git = "https://github.com/PCBox/PCBox.git"
+prefix = "v"

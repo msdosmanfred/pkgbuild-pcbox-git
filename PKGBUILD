@@ -1,0 +1,45 @@
+# Maintainer: MS-DOS Manfred
+pkgname=pcbox-git
+pkgver=5.3.r660.gca38da8aa
+pkgrel=1
+pkgdesc='An emulator for classic IBM PC clones'
+arch=('x86_64' 'aarch64') # use 86box-5.1 for pentium4 and armv7h
+url='https://pcbox-emu.xyz/'
+license=('GPL-2.0-or-later' 'CC-BY-4.0')
+depends=('fluidsynth' 'hicolor-icon-theme' 'libserialport' 'libslirp' 'openal' 'qt6-base' 'rtmidi' 'sdl2'                                                                    # explicit
+  'freetype2' 'gcc-libs' 'glib2' 'glibc' 'libevdev' 'libglvnd' 'libpng' 'libsndfile' 'libx11' 'libxcb' 'libxext' 'libxi' 'libxkbcommon-x11' 'libxkbcommon' 'wayland' 'zlib') # implicit
+makedepends=('git' 'cmake>=3.21' 'extra-cmake-modules' 'ninja' 'qt6-tools' 'vde2' 'vulkan-headers')
+optdepends=(
+  'pcbox-roms-git: ROM files'
+  'discord-game-sdk: Discord Rich Presence'
+  'ghostscript: Printing with Generic PostScript Printer'
+  'libpcap: Networking not limited to TCP/IP'
+)
+provides=('pcbox')
+conflicts=('86box')
+options=('!buildflags')
+source=(
+  "${pkgname}::git+https://github.com/PCBox/PCBox.git"
+  "${pkgname}-assets::git+https://github.com/PCBox/assets.git"
+)
+sha512sums=('SKIP' 'SKIP')
+
+pkgver() {
+  cd $pkgname
+  git describe --long --tags | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+build() {
+  LDFLAGS='-z now -z shstk' cmake -S$pkgname -Bbuild --preset regular --toolchain "cmake/flags-gcc-${CARCH}.cmake" -DCMAKE_INSTALL_PREFIX=/usr -DUSE_QT6=on -DNEW_DYNAREC=on #-DEMU_GIT_HASH="$(GIT_DIR=86box-git/.git git rev-parse --short HEAD)"
+  cmake --build build
+}
+
+package() {
+  DESTDIR="${pkgdir}" cmake --build "${srcdir}/build" --target install
+  for i in 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do
+    install -Dm644 "$srcdir/$pkgname/src/unix/assets/$i/net.86box.86Box.png" -t "$pkgdir/usr/share/icons/hicolor/$i/apps"
+  done
+  install -Dm644 "$srcdir/$pkgname/src/unix/assets/net.86box.86Box.desktop" "$pkgdir/usr/share/applications/net.86box.86Box.desktop"
+  install -d "$pkgdir/usr/share/pcbox/assets"
+  cp -a "$srcdir/${pkgname}-assets/sounds" "$pkgdir/usr/share/pcbox/assets"
+}

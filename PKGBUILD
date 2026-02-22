@@ -41,5 +41,5 @@ package() {
   done
   install -Dm644 "$srcdir/$pkgname/src/unix/assets/net.86box.86Box.desktop" "$pkgdir/usr/share/applications/net.86box.86Box.desktop"
   install -d "$pkgdir/usr/share/pcbox/assets"
-  cp -a "$srcdir/${pkgname}-assets/sounds" "$pkgdir/usr/share/pcbox/assets"
+  cp -a "$srcdir/${pkgname}-assets/sounds" "$pkgdir/usr/share/PCBox/assets"
 }

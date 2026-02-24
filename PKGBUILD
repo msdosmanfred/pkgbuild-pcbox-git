@@ -23,7 +23,7 @@ source=(
   "${pkgname}-assets::git+https://github.com/PCBox/assets.git"
 )
 sha512sums=('SKIP'
-            'SKIP')
+  'SKIP')
 
 pkgver() {
   cd $pkgname
@@ -41,6 +41,6 @@ package() {
     install -Dm644 "$srcdir/$pkgname/src/unix/assets/$i/net.86box.86Box.png" -t "$pkgdir/usr/share/icons/hicolor/$i/apps"
   done
   install -Dm644 "$srcdir/$pkgname/src/unix/assets/net.86box.86Box.desktop" "$pkgdir/usr/share/applications/net.86box.86Box.desktop"
-  install -d "$pkgdir/usr/share/pcbox/assets"
+  install -d "$pkgdir/usr/share/PCBox/assets"
   cp -a "$srcdir/${pkgname}-assets/sounds" "$pkgdir/usr/share/PCBox/assets"
 }

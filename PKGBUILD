@@ -1,6 +1,6 @@
 # Maintainer: MS-DOS Manfred
 pkgname=pcbox-git
-pkgver=5c3a0eac36d9ef615e2c3dc912ef7e7b4c46050f
+pkgver=6.0.r799.gd80af412b
 pkgrel=1
 pkgdesc='An emulator for classic IBM PC clones'
 arch=('x86_64' 'aarch64') # use 86box-5.1 for pentium4 and armv7h
@@ -37,7 +37,7 @@ build() {
 
 package() {
   DESTDIR="${pkgdir}" cmake --build "${srcdir}/build" --target install
-  for i in 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do
+  for i in 48x48 64x64 72x72 128x128 256x256; do
     install -Dm644 "$srcdir/$pkgname/src/unix/assets/$i/net.86box.86Box.png" -t "$pkgdir/usr/share/icons/hicolor/$i/apps"
   done
   install -Dm644 "$srcdir/$pkgname/src/unix/assets/net.86box.86Box.desktop" "$pkgdir/usr/share/applications/net.86box.86Box.desktop"

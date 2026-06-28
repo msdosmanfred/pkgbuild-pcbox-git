@@ -1,6 +1,6 @@
 pkgbase = pcbox-git
 	pkgdesc = An emulator for classic IBM PC clones
-	pkgver = 6.0.r799.gd80af412b
+	pkgver = 6.0.r818.gbdd9fdd2c
 	pkgrel = 1
 	url = https://pcbox-emu.xyz/
 	arch = x86_64
